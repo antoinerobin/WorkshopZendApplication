@@ -20,6 +20,19 @@ return array(
                     ),
                 ),
             ),
+            'user' =>
+                [
+                    'type'      => 'literal',
+                    'options'   =>
+                        [
+                            'route'     => '/user',
+                            'defaults'  =>
+                                [
+                                    'controller' => 'application\user',
+                                    'action'     => 'create',
+                                ],
+                        ]
+                ],
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -57,9 +70,24 @@ return array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
+        'invokables' => [
+            'doctrine.naming_strategy.underscore' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
+            'service.user' => 'Application\Service\User\User',
+            'mapper.user' => 'Application\Mapper\User\User'
+        ],
         'aliases' => array(
-            'translator' => 'MvcTranslator'
+            'translator' => 'MvcTranslator',
+            'em'         => 'doctrine.entitymanager.orm_default'
         ),
+    ),
+
+    'form_elements' => array(
+        'invokables' => array(
+            'user.create' => 'Application\Form\User\Profile'
+        ),
+        'initializers' => [
+            'Application\Form\Initializer'
+        ]
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -74,6 +102,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Index' => 'Application\Controller\IndexController',
+            'application\user' => 'Application\Controller\UserController'
         ),
     ),
     'view_manager' => array(
