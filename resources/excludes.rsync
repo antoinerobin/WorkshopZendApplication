@@ -1,0 +1,12 @@
+.git
+.gitignore
+.gitmodules
+/Vagrantfile
+/build
+/resources
+/public/images/project/*
+/public/images/resource/*
+/data/uploaded_files/*
+/data/user_photos/*
+/plesk-stat
+.htaccess

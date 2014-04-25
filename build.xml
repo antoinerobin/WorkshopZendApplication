@@ -1,0 +1,88 @@
+<project name="hitechpc" default="help" basedir=".">
+	
+	<property name="deploy.path-suffix" value=""/>
+	
+	<property file="./build.properties" />
+    
+	<available file="/var/lib/jenkins/db.properties" type="file" property="db.properties.exist"/>
+    <if>
+        <isset property="db.properties.exist" />
+        <then>
+            <property file="/var/lib/jenkins/db.properties" />
+        </then>
+    </if>
+
+    <target name="help" description="List available targets">
+        <exec executable="phing"
+              passthru="true">
+            <arg value="-l" />
+        </exec>
+    </target>
+
+	<target name="clean">
+		<delete dir="${dir.output}" />
+	</target>
+
+	<target name="prepare" depends="clean" description="Prepare the project before building">
+		<mkdir dir="${dir.output}" />
+		<mkdir dir="${dir.reports}" />
+		<mkdir dir="${dir.tmp}" />
+		<mkdir dir="./build/mysql" />
+	</target>
+
+    <target name="chmod">
+        <exec command="chmod -R 775 ." passthru="true" checkreturn="true" />
+    </target>
+
+    <target name="prepare-env">
+        <if>
+            <isset property="env" />
+            <then>
+                <filesync sourcedir="./resources/${env}/"
+                      options="-urpKz"
+                      destinationdir="./" />
+            </then>
+        </if>
+    </target>
+
+    <target name="sync">
+        <filesync delete="true"
+              sourcedir="./"
+              options="-e 'ssh -p ${deploy.port}' -lurpKz"
+              excludefile="${deploy.exclude}"
+              destinationdir="${deploy.user}@${deploy.host}:${deploy.path}/" />
+    </target>
+
+    <target name="db-prepare-properties">
+        <property name="deploy.host" value="localhost"/>
+        <property name="db.username" value="root"/>
+        <property name="db.password" value=""/>
+        <property name="db.app-user" value="newhtpc"/>
+        <property name="db.app-password" value="pascal91"/>
+        <property name="db.name" value="hitechpc"/>
+    </target>
+
+    <target name="database" depends="db-prepare-properties">
+
+    	<echo file="./build/mysql/create.sql">
+    		CREATE DATABASE IF NOT EXISTS ${db.name} DEFAULT CHARACTER SET latin1;
+    	   	GRANT USAGE ON *.* TO '${db.app-user}'@'localhost' IDENTIFIED BY '${db.app-password}';
+    		GRANT UPDATE,CREATE,REFERENCES,ALTER,LOCK TABLES,CREATE VIEW,CREATE ROUTINE,TRIGGER,INSERT,DELETE,DROP,INDEX,CREATE TEMPORARY TABLES,EXECUTE,SHOW VIEW,ALTER ROUTINE,SELECT ON `${db.name}`.* TO '${db.app-user}'@'localhost';        
+    	</echo>
+        
+        <pdosqlexec url="mysql:host=${deploy.host}" userid="${db.username}" password="${db.password}">
+            <transaction src="./build/mysql/create.sql"/>
+        </pdosqlexec>
+    </target>
+
+    <target name="database-import-sample">
+        <exec command="cd data/sql &amp;&amp; echo *.sql" escape="false" outputProperty="db.export.files" />
+        <pdosqlexec url="mysql:host=${deploy.host}" userid="${db.username}" password="${db.password}">
+            <filelist dir="data/sql" files="${db.export.files}" />
+        </pdosqlexec>
+    </target>
+
+    <target name="reset-db" depends="prepare, database, database-import-sample" />
+
+    <target name="deploy" depends="chmod, sync" description="Deploy the packaged application" />
+</project>

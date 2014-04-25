@@ -1,0 +1,22 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+
+    SetEnv APPLICATION_ENV "development"
+	DocumentRoot /vagrant/public_html
+
+	Alias /phpunit "/vagrant/build/reports/coverage/html"
+	Alias /phpdoc "/vagrant/build/reports/php-doc/html"
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /vagrant>
+	    Header set Access-Control-Allow-Origin "*"
+		Options FollowSymLinks MultiViews
+		DirectoryIndex index.php index.html
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+</VirtualHost>
