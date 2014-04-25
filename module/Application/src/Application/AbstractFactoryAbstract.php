@@ -1,14 +1,5 @@
 <?php
-/**
- * AbstractFactoryAbstract.php
- *
- * @date        21/05/13
- * @author      Renaud Wellens < renaud.wellens@vaconsulting.lu >
- * @file        AbstractFactoryAbstract.php
- * @copyright   Copyright (c) Foyer - All rights reserved
- * @license     Unauthorized copying of this source code, via any medium is strictly
- *              prohibited, proprietary and confidential.
- */
+
 namespace Application;
 
 use Zend\Filter\StaticFilter;

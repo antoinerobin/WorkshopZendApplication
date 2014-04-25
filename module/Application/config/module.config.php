@@ -66,10 +66,15 @@ return array(
         ),
     ),
     'service_manager' => array(
-        'abstract_factories' => array(
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
-        ),
+
+        'abstract_factories' =>
+            [
+                'Application\Service\AbstractFactory',
+                'Application\Mapper\AbstractFactory',
+                'Application\Form\AbstractFactory',
+                'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
+                'Zend\Log\LoggerAbstractServiceFactory',
+            ],
         'invokables' => [
             'doctrine.naming_strategy.underscore' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
             'service.user' => 'Application\Service\User\User',
