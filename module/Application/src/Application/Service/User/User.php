@@ -20,7 +20,7 @@ class User implements ServiceLocatorAwareInterface{
 
     public function persist($user){
 
-        $this->getServiceLocator()->get('mapper.user')->store($user);
+        $this->getServiceLocator()->get('mapper.user.user')->store($user);
 
     }
 } 

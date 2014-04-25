@@ -18,15 +18,14 @@ class UserController extends AbstractActionController{
 
         $sl = $this->getServiceLocator();
         /** @var \Application\Form\User\Profile $form */
-        $form = $sl->get('FormElementManager')->get('user.create');
+        $form = $sl->get('FormElementManager')->get('form.user.profile');
 
 
         if($this->getRequest()->isPost()){
             $form->setData($this->params()->fromPost());
 
             if($form->isValid()){
-
-                $user = $sl->get('service.user');
+                $user = $sl->get('service.user.user');
                 $user->persist($form->getData());
 
             }

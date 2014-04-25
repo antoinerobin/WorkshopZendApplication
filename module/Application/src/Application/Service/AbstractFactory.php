@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Form;
+namespace Application\Service;
 
 use Application\AbstractFactoryAbstract,
     Application\NamespaceManagerAwareTrait,

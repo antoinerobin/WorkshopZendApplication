@@ -77,8 +77,8 @@ return array(
             ],
         'invokables' => [
             'doctrine.naming_strategy.underscore' => 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
-            'service.user' => 'Application\Service\User\User',
-            'mapper.user' => 'Application\Mapper\User\User'
+            'service.user.user' => 'Application\Service\User\User',
+            'mapper.user.user' => 'Application\Mapper\User\User'
         ],
         'aliases' => array(
             'translator' => 'MvcTranslator',
@@ -88,7 +88,7 @@ return array(
 
     'form_elements' => array(
         'invokables' => array(
-            'user.create' => 'Application\Form\User\Profile'
+            'form.user.profile' => 'Application\Form\User\Profile'
         ),
         'initializers' => [
             'Application\Form\Initializer'

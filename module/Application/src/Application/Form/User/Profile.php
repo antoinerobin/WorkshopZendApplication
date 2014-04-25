@@ -15,6 +15,11 @@ use Application\Form\HydratorAwareInterface;
 
 class Profile extends Form implements HydratorAwareInterface, ObjectAwareInterface{
 
+    public function __construct(){
+        parent::__construct();
+        $this->init();
+    }
+
     public function init(){
         $this->add(
             [
@@ -59,6 +64,16 @@ class Profile extends Form implements HydratorAwareInterface, ObjectAwareInterfa
                 ]
             ]
         );
+
+//        $this->add(
+//            [
+//                'name' => 'status',
+//                'type' => 'hidden',
+//                'attributes' => ['value' => '0'],
+//                'options' => [
+//                ]
+//            ]
+//        );
 
         $this->add(
             [

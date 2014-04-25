@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Application\Form;
+namespace Application\Mapper;
 
 use Application\AbstractFactoryAbstract,
     Application\NamespaceManagerAwareTrait,

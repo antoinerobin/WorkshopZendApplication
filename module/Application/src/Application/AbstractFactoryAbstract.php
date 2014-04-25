@@ -25,10 +25,10 @@ abstract class AbstractFactoryAbstract
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
         $requestedName     = explode('.', $requestedName);
-        $nameSpaceExploded = explode('/', end($requestedName));
-
+        unset($requestedName[0]);
         $className = '';
-        foreach ($nameSpaceExploded as $nameSpaces) {
+
+        foreach ($requestedName as $nameSpaces) {
             $className .= '\\' . \ucfirst(StaticFilter::execute($nameSpaces, 'Word\DashToCamelCase'));
         }
 
@@ -39,7 +39,7 @@ abstract class AbstractFactoryAbstract
             }
         }
 
-        throw new Exception('No service available for class name ' . (string) $className);
+        throw new \Exception('No service available for class name ' . (string) $className);
     }
 
 
